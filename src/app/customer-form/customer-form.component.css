@@ -1,0 +1,7 @@
+:host {
+  padding: 20px;
+}
+
+input, mat-form-field {
+  width: 100%;
+}

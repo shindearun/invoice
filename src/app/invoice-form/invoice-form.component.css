@@ -1,0 +1,18 @@
+:host {
+  padding: 20px;
+}
+
+input, mat-form-field, mat-select {
+  width: 100%;
+}
+mat-card-actions {
+  margin-top: 20px;
+  display: block;
+}
+.toggler {
+  padding-top: 20px;
+}
+.total {
+  padding-top: 20px;
+  text-align: right;
+}
