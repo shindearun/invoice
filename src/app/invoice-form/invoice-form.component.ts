@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params, Router, ParamMap } from '@angular/router';
+import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { TdLoadingService, TdDialogService } from '@covalent/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Customer } from '../services/customer';
-import {Invoice} from '../services/invoice';
-import {InvoicesService} from '../services/invoices.service';
-import {CustomersService} from '../services/customers.service';
-import { Observable, pipe, throwError } from 'rxjs';
-import { map, switchMap, catchError, mergeMap } from 'rxjs/operators';
+import { Invoice } from '../services/invoice';
+import { InvoicesService } from '../services/invoices.service';
+import { CustomersService } from '../services/customers.service';
+import { combineLatest  } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { HoursValidator } from '../validators/hours.validator';
 // import 'rxjs/add/observable/combineLatest';
 
 @Component({
@@ -31,7 +32,18 @@ export class InvoiceFormComponent implements OnInit {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute) {
 
-    }
+    this.invoiceForm = this.formBuilder.group(
+      {
+        id: [''],
+        service: ['', Validators.required],
+        customerId: ['', Validators.required],
+        rate: ['', Validators.required],
+        hours: ['', [Validators.required, HoursValidator]],
+        date: ['', Validators.required],
+        paid: ['']
+      }
+    );
+  }
 
   ngOnInit() {
     this.loadingService.register('invoice');
@@ -44,9 +56,10 @@ export class InvoiceFormComponent implements OnInit {
 
     this.route.paramMap.pipe(
       map((params: ParamMap) => params.get('invoiceId'))
-      ).subscribe(invoiceId => {
+    ).subscribe(invoiceId => {
       if (invoiceId) {
         this.invoicesService.get<Invoice>(+invoiceId).subscribe(invoice => {
+          this.invoiceForm.setValue(invoice);
           this.invoice = invoice;
           this.loadingService.resolve('invoice');
         });
@@ -55,15 +68,21 @@ export class InvoiceFormComponent implements OnInit {
         this.loadingService.resolve('invoice');
       }
     });
+    combineLatest(
+      this.invoiceForm.get('rate').valueChanges,
+      this.invoiceForm.get('hours').valueChanges
+    ).subscribe(([rate = 0, hours = 0]) => {
+      this.total = rate * hours;
+    });
   }
 
   save() {
     if (this.invoice.id) {
-      this.invoicesService.update<Invoice>(this.invoice.id, this.invoice).subscribe(response => {
+      this.invoicesService.update<Invoice>(this.invoice.id, this.invoiceForm.value).subscribe(response => {
         this.viewInvoice(response.id);
       });
     } else {
-      this.invoicesService.create<Invoice>(this.invoice).subscribe(response => {
+      this.invoicesService.create<Invoice>(this.invoiceForm.value).subscribe(response => {
         this.viewInvoice(response.id);
       });
     }
@@ -77,7 +96,7 @@ export class InvoiceFormComponent implements OnInit {
     }).afterClosed().subscribe((accept: boolean) => {
       if (accept) {
         this.loadingService.register('invoice');
-        this.invoicesService.delete(this.invoice.id).subscribe(response => {
+        this.invoicesService.delete(this.invoice.id).subscribe(() => {
           this.loadingService.resolve('invoice');
           this.invoice.id = null;
           this.cancel();

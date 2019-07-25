@@ -1,0 +1,14 @@
+<mat-form-field>
+  <input name="hours" matInput type="number" placeholder="Hours"  [(ngModel)]="hours" hours
+    (keyup)="keypress($event)" #hourcontrol="ngModel" (change)="update()">     
+  <mat-error *ngIf="hourcontrol.touched && hourcontrol.invalid">
+    Hours must be a number in increments of .25     
+  </mat-error>     
+</mat-form-field>
+<div layout="row">
+  <button type="button" mat-button flex (click)="setValue(1)">+ 1</button>
+  <button type="button" mat-button flex (click)="setValue(.25)">+ .25</button>     
+  <button type="button" mat-button flex (click)="setValue(-.25)">- .25</button>     
+  <button type="button" mat-button flex (click)="setValue(-1)">- 1</button>
+       
+</div>

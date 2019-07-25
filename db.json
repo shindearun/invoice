@@ -118,12 +118,12 @@
   "invoices": [
     {
       "id": 3,
-      "customerId": 11,
-      "date": "2017-03-19T09:59:46Z",
       "service": "Performance Management",
+      "customerId": 11,
+      "rate": 500,
       "hours": 50,
-      "rate": 50,
-      "paid": false
+      "date": "2017-03-19T09:59:46Z",
+      "paid": true
     },
     {
       "id": 4,
@@ -493,6 +493,15 @@
       "hours": 38,
       "rate": 25,
       "paid": false
+    },
+    {
+      "id": 51,
+      "service": "Shinde Service",
+      "customerId": 21,
+      "rate": 2333,
+      "hours": 23,
+      "date": "2019-07-25T04:00:00.000Z",
+      "paid": true
     }
   ]
 }

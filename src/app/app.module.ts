@@ -27,6 +27,8 @@ import { CustomerComponent } from './customer/customer.component';
 import { InvoiceFormComponent } from './invoice-form/invoice-form.component';
 import { CustomerFormComponent } from './customer-form/customer-form.component';
 import { PhoneDirective } from './validators/phone.directive';
+import { HoursControlComponent } from './hours-control/hours-control.component';
+import { HoursDirective } from './validators/hours.directive';
 
 
 
@@ -40,6 +42,8 @@ import { PhoneDirective } from './validators/phone.directive';
     InvoiceFormComponent,
     CustomerFormComponent,
     PhoneDirective,
+    HoursControlComponent,
+    HoursDirective,
   ],
   imports: [
     BrowserModule,
