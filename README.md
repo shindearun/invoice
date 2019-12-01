@@ -25,3 +25,16 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+
+## Arun comments
+To run the project first fire 
+npm run api  -- that will start the json server for api
+open another terminal and run
+ng serve    -- that will start angular server
+
+to debug 
+in VSS run click on debug button and then select debug with chrome.
+Launch.json is already updated for that.
+
+
