@@ -42,7 +42,7 @@ export class HoursControlComponent implements ControlValueAccessor, Validator {
 
   validate(control: FormControl) {
     const cret = this.validateFn(control);
-    return null;
+    return cret;
   }
 
   writeValue(value: any) {
